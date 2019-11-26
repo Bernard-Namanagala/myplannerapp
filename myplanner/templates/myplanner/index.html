@@ -1,0 +1,225 @@
+{% extends 'base.html' %}
+{% block title %}mydayplanner | Home {% endblock title %}
+{% block login %} {% if logged_in %}<div class="login-top-nav"><a href="{% url 'myplanner:logout' %}">Logout</a></div> {% else %}
+<div class="login-top-nav"><a href="{% url 'myplanner:auth' %}">Sign in</a></div>
+{% endif %}{% endblock login %}
+{% block  main_content %}
+{% for task in all_real %}
+{{task.task_name}}
+{% endfor %}
+<div class="main">
+        <div id="top-of-main"><div id="date"></div></div>
+        <!-- quotes section -->
+        <div id="quote">
+          <p>
+            {{quote.quote_text}}-{{quote.author}}
+          </p>
+        </div>
+        <!-- end of quotes -->
+        <div id="tasks-weather-header">
+          <button id="task-button">My tasks</button>
+          <button id="weather-button">My weather</button>
+        </div>
+        <div id="tasks-weather">
+          <div class="weather-info">
+            <div id="weather-form">
+              <input
+                type="text"
+                name="weather"
+                placeholder="type in your city"
+                id="city"
+              />
+              <button id="get-weather">get weather</button>
+            </div>
+            <div id="my-weather">
+              <h3 id="weather-heading"></h3>
+              <p id="temperature"></p>
+              <p id="humidity"></p>
+              <p id="pressure"></p>
+              <p id="min-temp"></p>
+              <p id="max-temp"></p>
+            </div>
+          </div>
+
+          <div class="task-info">
+            <div id="submit-task-form">
+              <form
+                action="{% url 'myplanner:add_task' %}"
+                method="post"
+                enctype="multipart/form-data"
+              >
+                {% csrf_token %}
+                {{form.task_to_add}}
+                <button>add task</button>
+              </form>
+            </div>
+            {% if error_message %} {{error_message}} {% endif %}
+            <div class="my-tasks">
+              <div class="task-types">
+                <button id="all-tasks-button">Todays tasks</button>
+                <button id="completed-tasks-button">completed tasks</button>
+                <button id="uncompleted-tasks-button">
+                  uncompleted tasks
+                </button>
+                <button id="tasks-history-button">
+                  Task History
+                </button>
+              </div>
+              <form
+                method="POST"
+                action="{% url 'myplanner:add_to_completed' %}"
+              >
+                {% csrf_token %}
+                <div class="all-tasks">
+                  {% if all_tasks %}
+                  <div class="ayholder">
+                    <div
+                      class="all-tasks-first-child"
+                      style="text-align: center;border-top: 1px solid #000;"
+                    >
+                      Task
+                    </div>
+                    <div
+                      class="all-tasks-second-child"
+                      style="justify-content: center;border-top: 1px solid #000;"
+                    >
+                      Completed
+                    </div>
+                  </div>
+                  {% for task in all_tasks %}
+                  <div class="ayholder">
+                    <div class="all-tasks-first-child">
+                      <input type="radio" value="{{task.id}}" name="task" />
+                      {{task.task_name}}
+                    </div>
+                    <div class="all-tasks-second-child">
+                      {% if task.completed %}
+                      <i class="fas fa-check"></i>
+                      {% else %}
+                      <i class="fas fa-times" style="color:red"></i>
+                      {% endif %}
+                    </div>
+                  </div>
+                  {% endfor %} {% else %}
+                  <p>oops no tasks in the database</p>
+                  {% endif %}
+                </div>
+                <!-- end of all tasks -->
+                {% if all_tasks %}
+                <input
+                  name="delete_task"
+                  type="submit"
+                  id="delete-button"
+                  value="Delete task"
+                />
+                <input
+                  name="add_to_completed"
+                  type="submit"
+                  id="completed-button"
+                  value="Add to completed"
+                />
+                {% endif %}
+              </form>
+
+              <div class="completed-tasks">
+                {% if completed_tasks%}
+                <div class="ayholder">
+                  <div
+                    class="all-tasks-first-child"
+                    style="text-align: center;"
+                  >
+                    Task
+                  </div>
+                  <div
+                    class="all-tasks-second-child"
+                    style="justify-content: center;"
+                  >
+                    Completed
+                  </div>
+                </div>
+                {% for task in completed_tasks%}
+                <div class="ayholder">
+                  <div class="all-tasks-first-child">
+                    {{task.task_name}}
+                  </div>
+                  <div class="all-tasks-second-child">
+                    <i class="fas fa-check"></i>
+                  </div>
+                </div>
+                {% endfor %} {% else %}
+                <p>no completed tasks</p>
+                {% endif %}
+              </div>
+
+              <div class="uncompleted-tasks">
+                {% if uncompleted_tasks %}
+                <div class="ayholder">
+                  <div
+                    class="all-tasks-first-child"
+                    style="text-align: center;"
+                  >
+                    Task
+                  </div>
+                  <div
+                    class="all-tasks-second-child"
+                    style="justify-content: center;"
+                  >
+                    Completed
+                  </div>
+                </div>
+
+                {% for task in uncompleted_tasks %}
+                <div class="ayholder">
+                  <div class="all-tasks-first-child">
+                    {{task.task_name}}
+                  </div>
+                  <div class="all-tasks-second-child">
+                    <i class="fas fa-times" style="color: red;"></i>
+                  </div>
+                </div>
+                {% endfor %} {% else %}
+                <p>no uncompleted task!</p>
+                {% endif %}
+              </div>
+
+              <div class="task-history">
+                {% if task_history %}
+                <div class="ayholder">
+                  <div
+                    class="all-tasks-first-child"
+                    style="text-align: center;"
+                  >
+                    Task
+                  </div>
+                  <div
+                    class="all-tasks-second-child"
+                    style="justify-content: center;"
+                  >
+                    Completed
+                  </div>
+                </div>
+
+                {% for task in task_history %}
+                <div class="ayholder">
+                  <div class="all-tasks-first-child">
+                    {{task.task_name}}
+                  </div>
+                  <div class="all-tasks-second-child">
+                    {% if task.completed %}
+                    <i class="fas fa-check"></i>
+                    {% else %}
+                    <i class="fas fa-times" style="color:red"></i>
+                    {% endif %}
+                  </div>
+                </div>
+                {% endfor %} {% else %}
+                <p>oops no tasks in database</p>
+                {% endif %}
+              </div>
+              <!-- end of task history -->
+            </div>
+          </div>
+          <!-- end of task info -->
+        </div>
+      </div>
+{% endblock main_content %}

@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+{% block title %}Sign in | Sign up {% endblock title %}
+{% block main_content %}
+
+<div class="signin-signup main">
+        <div class="form-chosen">
+          <button id="sign-in-show-button">sign in</button>
+          <button id="sign-up-show-button">sign up</button>
+        </div>
+        <div class="main-form">
+          <form method="POST" id="sign-in-form">
+              {% csrf_token %}
+            {% for field in sign_in_form %}
+            <div class="form-row">
+              <label for="{{field.id_for_label}}">{{field.label}}</label>
+              {{field}}
+            </div>
+            {% endfor %}
+
+            <div class="form-row">
+              <input
+                type="submit"
+                name="submit-sign-in-form"
+                id="submit-sign-in-form"
+                value="Sign in"
+              />
+            </div>
+          </form>
+
+
+
+          <form method="POST" id="sign-up-form">
+              {% csrf_token %}
+            {% for field in sign_up_form %}
+            <div class="form-row">
+              <label for="{{field.id_for_label}}">{{field.label}}</label>
+              {{field}}
+            </div>
+           {% endfor %}
+
+            <div class="form-row">
+              <input
+                type="submit"
+                name="submit-sign-up-form"
+                id="submit-sign-up-form"
+                value="Sign up"
+              />
+            </div>
+          </form>
+
+        </div>
+      </div>
+      {% endblock main_content %}

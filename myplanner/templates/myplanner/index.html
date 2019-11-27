@@ -101,7 +101,12 @@
                     </div>
                   </div>
                   {% endfor %} {% else %}
+                  {% if logged_in %}
                   <p>oops no tasks in the database</p>
+                  {% else %}
+                  <p>Please <a style="color:rgb(60, 230, 130);" href="{% url 'myplanner:auth' %}">Sign in</a> to view your tasks</p>
+                  {% endif %}
+                  
                   {% endif %}
                 </div>
                 <!-- end of all tasks -->
@@ -147,7 +152,11 @@
                   </div>
                 </div>
                 {% endfor %} {% else %}
-                <p>no completed tasks</p>
+                {% if logged_in %}
+                  <p>No completed tasks</p>
+                  {% else %}
+                  <p>Please <a style="color:rgb(60, 230, 130);" href="{% url 'myplanner:auth' %}">Sign in</a> to view your tasks</p>
+                  {% endif %}
                 {% endif %}
               </div>
 
@@ -178,7 +187,11 @@
                   </div>
                 </div>
                 {% endfor %} {% else %}
-                <p>no uncompleted task!</p>
+                {% if logged_in %}
+                  <p>No uncompleted tasks</p>
+                  {% else %}
+                  <p>Please <a style="color:rgb(60, 230, 130);" href="{% url 'myplanner:auth' %}">Sign in</a> to view your tasks</p>
+                  {% endif %}
                 {% endif %}
               </div>
 
@@ -213,7 +226,11 @@
                   </div>
                 </div>
                 {% endfor %} {% else %}
-                <p>oops no tasks in database</p>
+                {% if logged_in %}
+                  <p>oops no tasks in the database</p>
+                  {% else %}
+                  <p>Please <a style="color:rgb(60, 230, 130);" href="{% url 'myplanner:auth' %}">Sign in</a> to view your tasks</p>
+                  {% endif %}
                 {% endif %}
               </div>
               <!-- end of task history -->

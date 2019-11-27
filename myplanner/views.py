@@ -5,6 +5,7 @@ import random
 from .forms import LoginForm, SignupForm, TaskToAddForm
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
+import custom_form_validations as cfv
 
 
 def index_view(request):
@@ -14,12 +15,14 @@ def index_view(request):
         task_history = request.user.task_set.order_by('-date')
         completed_tasks = request.user.task_set.filter(completed=1, date=datetime.date.today()).order_by('-id')
         uncompleted_tasks = request.user.task_set.filter(completed=0, date=datetime.date.today()).order_by('-id')
+        username = request.user.username
     else:
         logged_in = False
         all_tasks = []
         task_history = []
         completed_tasks = []
         uncompleted_tasks = []
+        username = ''
 
     form = TaskToAddForm()
     random_quote_id = random.randint(1, len(Quote.objects.all()))
@@ -32,6 +35,7 @@ def index_view(request):
         'quote': quote,
         'form': form,
         'logged_in': logged_in,
+        'username': username,
     }
     return render(request, 'myplanner/index.html', context)
 
@@ -101,9 +105,20 @@ def auth_view(request):
                     User.objects.get(username=username)
                 except User.DoesNotExist:
                     User.objects.create_user(username=username, email=email, password=password)
+                    new_user = authenticate(username=username, password=password)
+                    login(request, new_user)
+                    return HttpResponseRedirect(reverse('myplanner:index'))
+
                 else:
-                    print("User exists")
-                return HttpResponseRedirect(reverse('myplanner:index'))
+                    sign_up_username_error_message = 'username is already taken'
+                    sign_in_form = LoginForm()
+                    sign_up_form = SignupForm()
+                    context = {
+                                'sign_in_form': sign_in_form,
+                                'sign_up_form': sign_up_form,
+                                'sign_up_username_error_message':sign_up_username_error_message
+                              }
+                    return render(request, 'myplanner/signup.html', context)
     else:
         sign_in_form = LoginForm()
         sign_up_form = SignupForm()
@@ -113,6 +128,63 @@ def auth_view(request):
             'login_error_message':login_error_message
         }
         return render(request, 'myplanner/auth.html', context)
+
+
+def sign_up_view(request):
+    login_error_message = ''
+    if request.method == "POST":
+        if "submit-sign-in-form" in request.POST:
+            sign_in_form = LoginForm(request.POST)
+            if sign_in_form.is_valid():
+                username = sign_in_form.cleaned_data['Email_or_Username']
+                password = sign_in_form.cleaned_data['password']
+                user = authenticate(username=username, password=password)
+                if user is not None:
+                    login(request, user)
+                    return HttpResponseRedirect(reverse('myplanner:index'))
+                else:
+                    login_error_message = 'Username and password do not match'
+                    sign_in_form = LoginForm()
+                    sign_up_form = SignupForm()
+                    context = {
+                                'sign_in_form': sign_in_form,
+                                'sign_up_form': sign_up_form,
+                                'login_error_message':login_error_message
+                              }
+                    return render(request, 'myplanner/auth.html', context)
+
+        elif "submit-sign-up-form" in request.POST:
+            sign_up_form = SignupForm(request.POST)
+            if sign_up_form.is_valid():
+                username = sign_up_form.cleaned_data['Username']
+                email = sign_up_form.cleaned_data['Email']
+                password = sign_up_form.cleaned_data['Password']
+                try:
+                    User.objects.get(username=username)
+                except User.DoesNotExist:
+                    User.objects.create_user(username=username, email=email, password=password)
+                    new_user = authenticate(username=username, password=password)
+                    login(request, new_user)
+                    return HttpResponseRedirect(reverse('myplanner:index'))
+                else:
+                    sign_up_error_message = 'username is already taken'
+                    sign_in_form = LoginForm()
+                    sign_up_form = SignupForm()
+                    context = {
+                                'sign_in_form': sign_in_form,
+                                'sign_up_form': sign_up_form,
+                                'sign_up_error_message':sign_up_error_message
+                              }
+                    return render(request, 'myplanner/signup.html', context)
+    else:
+        sign_in_form = LoginForm()
+        sign_up_form = SignupForm()
+        context = {
+            'sign_in_form': sign_in_form,
+            'sign_up_form': sign_up_form,
+            'login_error_message':login_error_message
+        }
+        return render(request, 'myplanner/signup.html', context)
 
 
 def logout_view(request):

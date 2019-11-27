@@ -37,15 +37,27 @@ setInterval(() => {
 }, 0);
 
 $(document).ready(function() {
-  // sign in sing up
+  // sign in sign up
   $("#sign-in-show-button").click(function() {
+    $("#sign-up-show-button")
+      .css("background", "rgb(180, 253, 211)")
+      .css("color", "rgb(90, 90, 90)");
+    $(this)
+      .css("background", "rgb(60, 230, 130)")
+      .css("color", "#000");
     $("#sign-up-form").hide();
     $("#sign-in-form").show("slow");
   });
 
   $("#sign-up-show-button").click(function() {
+    $("#sign-in-show-button")
+      .css("background", "rgb(180, 253, 211)")
+      .css("color", "rgb(90, 90, 90)");
     $("#sign-in-form").hide();
     $("#sign-up-form").show("slow");
+    $(this)
+      .css("background", "rgb(60, 230, 130)")
+      .css("color", "#000");
   });
   // end of sign in sign up
 

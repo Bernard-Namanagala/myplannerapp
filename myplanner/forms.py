@@ -12,7 +12,7 @@ class SignupForm(forms.Form):
     Email = forms.CharField(label="Email", widget=forms.EmailInput(attrs={'id': 'sign-up-email'}),
                             max_length=125)
     Username = forms.CharField(label="Username", widget=forms.TextInput(attrs={'id': 'username'}))
-    Password = forms.CharField(widget=forms.PasswordInput(attrs={'id': 'sign-up-password'}))
+    Password = forms.CharField(label="Password", widget=forms.PasswordInput(attrs={'id': 'sign-up-password'}))
 
 
 class TaskToAddForm(forms.Form):

@@ -1,19 +1,19 @@
-{% extends 'base.html' %}
-{% block title %}Sign in | Sign up {% endblock title %}
-{% block main_content %}
+{% extends 'base.html' %} {% block title %}Sign in | Sign up {% endblock title%} {% block main_content %}
 
 <div class="signin-signup main">
-        <div class="form-chosen">
-          <button id="sign-in-show-button">sign in</button>
-          <button id="sign-up-show-button">sign up</button>
-        </div>
-        <div class="main-form">
-          <form method="POST" id="sign-in-form">
-              <h2 style="text-align:center; padding:0;">Sign in</h2>
-              {% csrf_token %}
-              <div class='error-list'> {% if login_error_message%}{{login_error_message}} {% endif %}</div>
+  <div class="form-chosen">
+    <button id="sign-in-show-button">sign in</button>
+    <button id="sign-up-show-button">sign up</button>
+  </div>
+  <div class="main-form">
+    <form method="POST" id="sign-in-form" style="display:none">
+      <h2 style="text-align:center; padding:0;">Sign in</h2>
+      {% csrf_token %}
+      <div class="error-list">
+        {% if login_error_message%}{{login_error_message}} {% endif %}
+      </div>
 
-            <div class='form-row'>
+        <div class='form-row'>
             <label for="{{sign_in_form.Email_or_Username.id_for_label}}">{{sign_in_form.Email_or_Username.label}}</label>
             {{sign_in_form.Email_or_Username}}
               <div class='error-list' id='sign_in_email_or_username_error'></div>
@@ -25,21 +25,22 @@
               <div class='error-list' id='sign_in_password_error'></div>
             </div>
 
-            <div class="form-row">
-              <input
-                type="submit"
-                name="submit-sign-in-form"
-                id="submit-sign-in-form"
-                value="Sign in"
-              />
-            </div>
-          </form>
+      <div class="form-row">
+        <input
+          type="submit"
+          name="submit-sign-in-form"
+          id="submit-sign-in-form"
+          value="Sign in"
+        />
+      </div>
+    </form>
 
-          <form method="POST" id="sign-up-form">
-           <h2 style="text-align:center; padding:0;">Sign up</h2>
-              {% csrf_token %}
-
-           <div class='form-row'>
+    <form method="POST" id="sign-up-form" style="display:block">
+      <h2 style="text-align:center; padding:0;">Sign up</h2>
+      <div class='error-list'>{% if sign_up_error_message %} {{sign_up_error_message}} {% endif %}</div>
+      {% csrf_token %} 
+      
+       <div class='form-row'>
             <label for="{{sign_up_form.Email.id_for_label}}">{{sign_up_form.Email.label}}</label>
             {{sign_up_form.Email}}
               <div class='error-list' id='sign_up_email_error'>
@@ -65,17 +66,15 @@
               </div>
             </div>
 
-
-            <div class="form-row">
-              <input
-                type="submit"
-                name="submit-sign-up-form"
-                id="submit-sign-up-form"
-                value="Sign up"
-              />
-            </div>
-          </form>
-
-        </div>
+      <div class="form-row">
+        <input
+          type="submit"
+          name="submit-sign-up-form"
+          id="submit-sign-up-form"
+          value="Sign up"
+        />
       </div>
-      {% endblock main_content %}
+    </form>
+  </div>
+</div>
+{% endblock main_content %}

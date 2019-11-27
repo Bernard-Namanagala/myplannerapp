@@ -6,6 +6,7 @@ urlpatterns = [
     path('addtask/', views.add_task, name="add_task"),
     path('add_to_completed/', views.add_to_completed, name='add_to_completed'),
     path('login/', views.auth_view, name="auth"),
-    path('logout/', views.logout_view, name="logout")
+    path('logout/', views.logout_view, name="logout"),
+    path('sign_up/',views.sign_up_view, name='sign_up')
 
 ]

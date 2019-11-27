@@ -121,7 +121,8 @@ nav {
   padding-top: 1.8rem;
   padding-bottom: 0.2rem;
 }
-#submit-sign-in-form , #submit-sign-up-form{
+#submit-sign-in-form,
+#submit-sign-up-form {
   width: 15rem;
   margin: 2rem auto;
 }
@@ -130,6 +131,11 @@ nav {
   height: 2rem;
   border-radius: 15px;
   padding-left: 0.5rem;
+}
+.error-list {
+  color: red;
+  text-align: center;
+  padding-top: 0.2rem;
 }
 #date {
   /* background: rgb(60, 230, 130); */
@@ -394,12 +400,12 @@ nav {
   }
 }
 
-@media screen and (max-width:400px){
-.task-info{
-padding:0.1rem;
-}
-#submit-task-form{
-margin-top:0.5rem;
-margin-bottom:0.5rem
-}
+@media screen and (max-width: 400px) {
+  .task-info {
+    padding: 0.1rem;
+  }
+  #submit-task-form {
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
+  }
 }

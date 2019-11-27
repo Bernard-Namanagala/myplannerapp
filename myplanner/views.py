@@ -69,6 +69,7 @@ def add_to_completed(request):
 
 
 def auth_view(request):
+    login_error_message = ''
     if request.method == "POST":
         if "submit-sign-in-form" in request.POST:
             sign_in_form = LoginForm(request.POST)
@@ -80,7 +81,15 @@ def auth_view(request):
                     login(request, user)
                     return HttpResponseRedirect(reverse('myplanner:index'))
                 else:
-                    return HttpResponseRedirect(reverse('myplanner:auth'))
+                    login_error_message = 'Username and password do not match'
+                    sign_in_form = LoginForm()
+                    sign_up_form = SignupForm()
+                    context = {
+                                'sign_in_form': sign_in_form,
+                                'sign_up_form': sign_up_form,
+                                'login_error_message':login_error_message
+                              }
+                    return render(request, 'myplanner/auth.html', context)
 
         elif "submit-sign-up-form" in request.POST:
             sign_up_form = SignupForm(request.POST)
@@ -100,7 +109,8 @@ def auth_view(request):
         sign_up_form = SignupForm()
         context = {
             'sign_in_form': sign_in_form,
-            'sign_up_form': sign_up_form
+            'sign_up_form': sign_up_form,
+            'login_error_message':login_error_message
         }
         return render(request, 'myplanner/auth.html', context)
 

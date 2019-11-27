@@ -10,10 +10,12 @@
         <div class="main-form">
           <form method="POST" id="sign-in-form">
               {% csrf_token %}
+              <div class='error-list'> {% if login_error_message%}{{login_error_message}} {% endif %}</div>
             {% for field in sign_in_form %}
             <div class="form-row">
               <label for="{{field.id_for_label}}">{{field.label}}</label>
               {{field}}
+              <div class='error-list' id="{{field.id_for_label}}"></div>
             </div>
             {% endfor %}
 

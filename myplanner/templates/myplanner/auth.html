@@ -16,13 +16,17 @@
             <div class='form-row'>
             <label for="{{sign_in_form.Email_or_Username.id_for_label}}">{{sign_in_form.Email_or_Username.label}}</label>
             {{sign_in_form.Email_or_Username}}
-              <div class='error-list' id='sign_in_email_or_username_error'></div>
+              <div class='error-list' id='sign_in_email_or_username_error'>
+              {% if sign_in_email_or_username_error_message %} {{sign_in_email_or_username_error_message}} {% endif %}
+              </div>
             </div>
              
              <div class='form-row'>
             <label for="{{sign_in_form.password.id_for_label}}">{{sign_in_form.password.label}}</label>
                      {{sign_in_form.password}}
-              <div class='error-list' id='sign_in_password_error'></div>
+              <div class='error-list' id='sign_in_password_error'>
+              {% if sign_in_password_error_message %} {{sign_in_password_error_message}} {% endif %}
+              </div>
             </div>
 
             <div class="form-row">

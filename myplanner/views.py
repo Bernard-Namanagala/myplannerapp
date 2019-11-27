@@ -5,7 +5,7 @@ import random
 from .forms import LoginForm, SignupForm, TaskToAddForm
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
-import custom_form_validations as cfv
+from . import custom_form_validations as cfv
 
 
 def index_view(request):
@@ -85,13 +85,23 @@ def auth_view(request):
                     login(request, user)
                     return HttpResponseRedirect(reverse('myplanner:index'))
                 else:
+                    sign_in_email_or_username_error_message = ''
+                    sign_in_password_error_message= ''
                     login_error_message = 'Username and password do not match'
-                    sign_in_form = LoginForm()
+                    if not cfv.validate_username(username)[0]:
+                        sign_in_email_or_username_error_message = cfv.validate_username(username)[-1]
+                        login_error_message = ''
+                    if not cfv.validate_password(password)[0]:
+                        sign_in_password_error_message = cfv.validate_password(password)[-1]
+                        login_error_message = ''
+                    sign_in_form = LoginForm(request.POST)
                     sign_up_form = SignupForm()
                     context = {
                                 'sign_in_form': sign_in_form,
                                 'sign_up_form': sign_up_form,
-                                'login_error_message':login_error_message
+                                'login_error_message':login_error_message,
+                                'sign_in_email_or_username_error_message':sign_in_email_or_username_error_message,
+                                'sign_in_password_error_message':sign_in_password_error_message,
                               }
                     return render(request, 'myplanner/auth.html', context)
 
@@ -104,15 +114,37 @@ def auth_view(request):
                 try:
                     User.objects.get(username=username)
                 except User.DoesNotExist:
-                    User.objects.create_user(username=username, email=email, password=password)
-                    new_user = authenticate(username=username, password=password)
-                    login(request, new_user)
-                    return HttpResponseRedirect(reverse('myplanner:index'))
+                    if cfv.validate_username(username)[0] and cfv.validate_email(email) and cfv.validate_password(password)[0]:
+                        User.objects.create_user(username=username, email=email, password=password)
+                        new_user = authenticate(username=username, password=password)
+                        login(request, new_user)
+                        return HttpResponseRedirect(reverse('myplanner:index'))
+                    else:
+                        sign_up_email_error_message = ''
+                        sign_up_password_error_message= ''
+                        sign_up_username_error_message= ''
+                        if not cfv.validate_email(email):
+                            sign_up_email_error_message = "invalid email address"
+                        if not cfv.validate_password(password)[0]:
+                            sign_up_password_error_message = cfv.validate_password(password)[-1]
+                        if not cfv.validate_username(username)[0]:
+                            sign_up_username_error_message = cfv.validate_username(username)[-1]
+                        sign_in_form = LoginForm()
+                        sign_up_form = SignupForm(request.POST)
+                        context = {
+                                'sign_in_form': sign_in_form,
+                                'sign_up_form': sign_up_form,
+                                'sign_up_email_error_message':sign_up_email_error_message,
+                                'sign_up_password_error_message':sign_up_password_error_message,
+                                'sign_up_username_error_message':sign_up_username_error_message,
+                              }
+                        return render(request, 'myplanner/signup.html', context)
+
 
                 else:
                     sign_up_username_error_message = 'username is already taken'
                     sign_in_form = LoginForm()
-                    sign_up_form = SignupForm()
+                    sign_up_form = SignupForm(request.POST)
                     context = {
                                 'sign_in_form': sign_in_form,
                                 'sign_up_form': sign_up_form,
@@ -144,7 +176,16 @@ def sign_up_view(request):
                     return HttpResponseRedirect(reverse('myplanner:index'))
                 else:
                     login_error_message = 'Username and password do not match'
-                    sign_in_form = LoginForm()
+                    sign_in_email_or_username_error_message = ''
+                    sign_in_password_error_message= ''
+                    login_error_message = 'Username and password do not match'
+                    if not cfv.validate_username(username)[0]:
+                        sign_in_email_or_username_error_message = cfv.validate_username(username)[-1]
+                        login_error_message = ''
+                    if not cfv.validate_password(password)[0]:
+                        sign_in_password_error_message = cfv.validate_password(password)[-1]
+                        login_error_message = ''
+                    sign_in_form = LoginForm(request.POST)
                     sign_up_form = SignupForm()
                     context = {
                                 'sign_in_form': sign_in_form,
@@ -162,10 +203,33 @@ def sign_up_view(request):
                 try:
                     User.objects.get(username=username)
                 except User.DoesNotExist:
-                    User.objects.create_user(username=username, email=email, password=password)
-                    new_user = authenticate(username=username, password=password)
-                    login(request, new_user)
-                    return HttpResponseRedirect(reverse('myplanner:index'))
+                    if cfv.validate_username(username)[0] and cfv.validate_email(email) and cfv.validate_password(password)[0]:
+                        User.objects.create_user(username=username, email=email, password=password)
+                        new_user = authenticate(username=username, password=password)
+                        login(request, new_user)
+                        return HttpResponseRedirect(reverse('myplanner:index'))
+                    else:
+                        sign_up_email_error_message = ''
+                        sign_up_password_error_message= ''
+                        sign_up_username_error_message= ''
+                        if not cfv.validate_email(email):
+                            sign_up_email_error_message = "invalid email address"
+                        if not cfv.validate_password(password)[0]:
+                            sign_up_password_error_message = cfv.validate_password(password)[-1]
+                        if not cfv.validate_username(username)[0]:
+                            sign_up_username_error_message = cfv.validate_username(username)[-1]
+                        sign_in_form = LoginForm()
+                        sign_up_form = SignupForm(request.POST)
+                        context = {
+                                'sign_in_form': sign_in_form,
+                                'sign_up_form': sign_up_form,
+                                'sign_up_email_error_message':sign_up_email_error_message,
+                                'sign_up_password_error_message':sign_up_password_error_message,
+                                'sign_up_username_error_message':sign_up_username_error_message,
+                              }
+                        return render(request, 'myplanner/signup.html', context)
+
+
                 else:
                     sign_up_error_message = 'username is already taken'
                     sign_in_form = LoginForm()

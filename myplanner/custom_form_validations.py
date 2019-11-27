@@ -17,7 +17,7 @@ def validate_username(username):
                 if not re.search(regex, username):
                     return [False, 'Username contains invalid characters']
                 else:
-                    return [True,"valid"]
+                    return [True,""]
 
 def validate_password(password):
     if len(password) < 3:
@@ -30,6 +30,5 @@ def validate_password(password):
             if not re.search(regex, password):
                 return [False, 'password contains invalid characters']
             else:
-                return [True,"valid"]
+                return [True,""]
 
-print(validate_password("!123@4"))

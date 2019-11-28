@@ -28,7 +28,6 @@ media
 *.iws /out/ 
 /.idea
 .idea/
-.idea
 
 # Python # 
 *.py[cod] 

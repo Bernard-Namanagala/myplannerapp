@@ -25,7 +25,7 @@ SECRET_KEY = '810gffrke!un!+#hj59!eslm!@ds+=i7^m0g07qju$h_f^f_rq'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['.herokuapp.com']
+ALLOWED_HOSTS = ['mydayscheduler.herokuapp.com']
 
 
 # Application definition

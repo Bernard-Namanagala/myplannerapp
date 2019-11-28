@@ -23,7 +23,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = '810gffrke!un!+#hj59!eslm!@ds+=i7^m0g07qju$h_f^f_rq'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['mydayscheduler.herokuapp.com']
 

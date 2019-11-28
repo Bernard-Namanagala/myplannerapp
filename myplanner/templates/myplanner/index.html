@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{% block title %}mydayplanner | Home {% endblock title %}
+{% block title %}mydayscheduler | Home {% endblock title %}
 {% block login %} {% if logged_in %}<div class="login-top-nav"><a href="{% url 'myplanner:logout' %}">Logout</a></div> {% else %}
 <div class="login-top-nav"><a href="{% url 'myplanner:auth' %}">Sign in</a></div>
 {% endif %}{% endblock login %}

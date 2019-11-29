@@ -13,18 +13,18 @@
     <title>  {% block title%} {% endblock title %} </title>
   </head>
   <body>
-    <nav>
+      <nav>
       <div class="logo"><a style="text-decoration:none; color:#fff;" href="{% url 'myplanner:index' %}">Mydayscheduler</a></div>
       {% block login%} {% endblock login%}
-    </nav>
+    </nav> 
     <div class="wrapper">
       {% block main_content %} 
       {% endblock main_content %}
     </div>
-    {% comment %} <script src="{% static 'myplanner/js/jquery-3.4.1.js' %}"></script> {% endcomment %}
-    <script src="https://code.jquery.com/jquery-3.4.1.min.js"
+    <script src="{% static 'myplanner/js/jquery-3.4.1.js' %}"></script> 
+    {% comment %} <script src="https://code.jquery.com/jquery-3.4.1.min.js"
                  integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
-                 crossorigin="anonymous"></script>
+                 crossorigin="anonymous"></script> {% endcomment %}
     <script src="{% static 'myplanner/js/final.js' %}"></script>
   </body>
 </html>

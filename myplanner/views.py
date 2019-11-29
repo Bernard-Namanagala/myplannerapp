@@ -23,10 +23,18 @@ def index_view(request):
         completed_tasks = []
         uncompleted_tasks = []
         username = ''
-
+    def getquote():
+        random_quote_id = random.randint(1, len(Quote.objects.all()))
+        try:
+            Quote.objects.get(id=random_quote_id)
+        except Quote.DoesNotExist:
+            getquote()
+        else:
+            quote = Quote.objects.get(id=random_quote_id)
+            return quote
+    
+    quote = getquote()
     form = TaskToAddForm()
-    random_quote_id = random.randint(1, len(Quote.objects.all()))
-    quote = Quote.objects.get(id=random_quote_id)
     context = {
         'all_tasks': all_tasks,
         'completed_tasks': completed_tasks,
